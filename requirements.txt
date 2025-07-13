@@ -1,0 +1,11 @@
+# Para hacer peticiones HTTP a los servicios del backend
+requests
+
+# Para las pruebas de Front-End (controlar el navegador)
+selenium
+
+# Para generar los reportes en PDF
+reportlab
+
+# Para generar los gráficos para los reportes
+matplotlib
