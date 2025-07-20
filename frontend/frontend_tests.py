@@ -9,11 +9,21 @@ import random
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from reporting.pdf_generator import PDFReportGenerator
 
 
 BASE_URL = "http://localhost:5173/"
 
 def run_tests():
+
+    report = PDFReportGenerator(
+        "Reporte de Pruebas de Integración - Frontend",
+        report_type="frontend"
+    )
+
     MODULE_NAME = "Flujo de Registro"
     print(f"\n--- Ejecutando Prueba de {MODULE_NAME} ---")
 
@@ -60,16 +70,20 @@ def run_tests():
 
         duration = time.time() - start_time
         print(f"[PASSED] Registro de Usuario: El usuario se registró correctamente. ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Registro de Usuario", "PASSED", "El usuario se registró correctamente.", duration)
 
     except NoSuchElementException as e:
         duration = time.time() - start_time
         print(f"[FAILED] Registro de Usuario: Elemento no encontrado - {str(e)} ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Registro de Usuario", "FAILED", f"Elemento no encontrado - {str(e)}", duration)
     except AssertionError as e:
         duration = time.time() - start_time
         print(f"[FAILED] Registro de Usuario: No se encontró mensaje de éxito. ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Registro de Usuario", "FAILED", "No se encontró mensaje de éxito.", duration)
     except Exception as e:
         duration = time.time() - start_time
         print(f"[FAILED] Registro de Usuario: {str(e)} ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Registro de Usuario", "FAILED", str(e), duration)
 
     #Registro con email duplicado
     start_time = time.time()
@@ -101,16 +115,20 @@ def run_tests():
 
         duration = time.time() - start_time
         print(f"[PASSED] Registro con Email Duplicado: Se detectó correctamente el error. ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Registro con Email Duplicado", "PASSED", "Se detectó correctamente el error.", duration)
 
     except NoSuchElementException as e:
         duration = time.time() - start_time
         print(f"[FAILED] Registro con Email Duplicado: Elemento no encontrado - {str(e)} ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Registro con Email Duplicado", "FAILED", f"Elemento no encontrado - {str(e)}", duration)
     except AssertionError as e:
         duration = time.time() - start_time
         print(f"[FAILED] Registro con Email Duplicado: No se mostró mensaje de error esperado. ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Registro con Email Duplicado", "FAILED", "No se mostró mensaje de error esperado.", duration)
     except Exception as e:
         duration = time.time() - start_time
         print(f"[FAILED] Registro con Email Duplicado: {str(e)} ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Registro con Email Duplicado", "FAILED", str(e), duration)
 
     # Login con contraseña incorrecta
     start_time = time.time()
@@ -145,16 +163,20 @@ def run_tests():
 
         duration = time.time() - start_time
         print(f"[PASSED] Login con contraseña incorrecta: Se detectó correctamente el error. ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Login con contraseña incorrecta", "PASSED", "Se detectó correctamente el error.", duration)
 
     except NoSuchElementException as e:
         duration = time.time() - start_time
         print(f"[FAILED] Login con contraseña incorrecta: Elemento no encontrado - {str(e)} ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Login con contraseña incorrecta", "FAILED", f"Elemento no encontrado - {str(e)}", duration)
     except AssertionError as e:
         duration = time.time() - start_time
         print(f"[FAILED] Login con contraseña incorrecta: No se mostró mensaje de error esperado. ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Login con contraseña incorrecta", "FAILED", "No se mostró mensaje de error esperado.", duration)
     except Exception as e:
         duration = time.time() - start_time
         print(f"[FAILED] Login con contraseña incorrecta: {str(e)} ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Login con contraseña incorrecta", "FAILED", str(e), duration)
 
     #Login exitoso
     start_time = time.time()
@@ -187,16 +209,20 @@ def run_tests():
 
         duration = time.time() - start_time
         print(f"[PASSED] Login exitoso. ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Login exitoso", "PASSED", "Login exitoso.", duration)
 
     except NoSuchElementException as e:
         duration = time.time() - start_time
         print(f"[FAILED] Login: Elemento no encontrado - {str(e)} ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Login", "FAILED", f"Elemento no encontrado - {str(e)}", duration)
     except AssertionError as e:
         duration = time.time() - start_time
         print(f"[FAILED] Login: No se mostró mensaje de error esperado. ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Login", "FAILED", "No se mostró mensaje de error esperado.", duration)
     except Exception as e:
         duration = time.time() - start_time
         print(f"[FAILED] Login: {str(e)} ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Login", "FAILED", str(e), duration)
 
     MODULE_NAME = "Flujo de donación"
     print(f"\n--- Ejecutando Prueba de {MODULE_NAME} ---")
@@ -261,16 +287,20 @@ def run_tests():
 
         duration = time.time() - start_time
         print(f"[PASSED] Donación creada exitosamente. ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Crear donación", "PASSED", "Donación creada exitosamente.", duration)
 
     except NoSuchElementException as e:
         duration = time.time() - start_time
         print(f"[FAILED] Crear donación: Elemento no encontrado - {str(e)} ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Crear donación", "FAILED", f"Elemento no encontrado - {str(e)}", duration)
     except AssertionError as e:
         duration = time.time() - start_time
         print(f"[FAILED] Crear donación: No se mostró mensaje esperado. ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Crear donación", "FAILED", "No se mostró mensaje esperado.", duration)
     except Exception as e:
         duration = time.time() - start_time
         print(f"[FAILED] Crear donación: {str(e)} ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Crear donación", "FAILED", str(e), duration)
 
 
     #Eliminar donación
@@ -301,16 +331,20 @@ def run_tests():
 
         duration = time.time() - start_time
         print(f"[PASSED] Donación eliminada exitosamente. ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Eliminar donación", "PASSED", "Donación eliminada exitosamente.", duration)
 
     except NoSuchElementException as e:
         duration = time.time() - start_time
         print(f"[FAILED] Eliminar donación: Elemento no encontrado - {str(e)} ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Eliminar donación", "FAILED", f"Elemento no encontrado - {str(e)}", duration)
     except AssertionError as e:
         duration = time.time() - start_time
         print(f"[FAILED] Eliminar donación: No se mostró mensaje esperado. ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Eliminar donación", "FAILED", "No se mostró mensaje esperado.", duration)
     except Exception as e:
         duration = time.time() - start_time
         print(f"[FAILED] Eliminar donación: {str(e)} ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Eliminar donación", "FAILED", str(e), duration)
 
     #Crear donación (datos invalidos)
 
@@ -371,16 +405,20 @@ def run_tests():
 
         duration = time.time() - start_time
         print(f"[PASSED] La donación no fue creada, pues no se suministran todos los datos. ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Crear donación (datos inválidos)", "PASSED", "La donación no fue creada, pues no se suministran todos los datos.", duration)
 
     except NoSuchElementException as e:
         duration = time.time() - start_time
         print(f"[FAILED] Crear donación (datos inválidos): Elemento no encontrado - {str(e)} ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Crear donación (datos inválidos)", "FAILED", f"Elemento no encontrado - {str(e)}", duration)
     except AssertionError as e:
         duration = time.time() - start_time
         print(f"[FAILED] Crear donación (datos inválidos): No se mostró mensaje de error esperado. ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Crear donación (datos inválidos)", "FAILED", "No se mostró mensaje de error esperado.", duration)
     except Exception as e:
         duration = time.time() - start_time
         print(f"[FAILED] Crear donación (datos inválidos): {str(e)} ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Crear donación (datos inválidos)", "FAILED", str(e), duration)
 
     MODULE_NAME = "Flujo de carrito de compras"
     print(f"\n--- Ejecutando Prueba de {MODULE_NAME} ---")
@@ -409,16 +447,20 @@ def run_tests():
 
         duration = time.time() - start_time
         print(f"[PASSED] El producto fue añadido al carrito. ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Añadir al carrito", "PASSED", "El producto fue añadido al carrito.", duration)
 
     except NoSuchElementException as e:
         duration = time.time() - start_time
         print(f"[FAILED] Añadir al carrito: Elemento no encontrado - {str(e)} ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Añadir al carrito", "FAILED", f"Elemento no encontrado - {str(e)}", duration)
     except AssertionError as e:
         duration = time.time() - start_time
         print(f"[FAILED] Añadir al carrito: No se mostró mensaje esperado. ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Añadir al carrito", "FAILED", "No se mostró mensaje esperado.", duration)
     except Exception as e:
         duration = time.time() - start_time
         print(f"[FAILED] Añadir al carrito: {str(e)} ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Añadir al carrito", "FAILED", str(e), duration)
 
     #Vaciar carrito
     start_time = time.time()
@@ -442,19 +484,28 @@ def run_tests():
 
         duration = time.time() - start_time
         print(f"[PASSED] Se vació el carrito. ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Vaciar carrito", "PASSED", "Se vació el carrito.", duration)
 
     except NoSuchElementException as e:
         duration = time.time() - start_time
         print(f"[FAILED] Vaciar carrito: Elemento no encontrado - {str(e)} ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Vaciar carrito", "FAILED", f"Elemento no encontrado - {str(e)}", duration)
     except AssertionError as e:
         duration = time.time() - start_time
         print(f"[FAILED] Vaciar carrito: No se mostró mensaje esperado. ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Vaciar carrito", "FAILED", "No se mostró mensaje esperado.", duration)
     except Exception as e:
         duration = time.time() - start_time
         print(f"[FAILED] Vaciar carrito: {str(e)} ({duration:.2f}s)")
+        report.add_test_result(MODULE_NAME, "Vaciar carrito", "FAILED", str(e), duration)
 
     finally:
         driver.quit()
+        print("\n--- Generando Reporte PDF ---")
+        # Guardará el reporte en la carpeta 'integration_tests/frontend/reports'
+        output_dir = os.path.join(os.path.dirname(__file__), 'reports')
+        report.generate(output_dir)
+        print("\n✅ Suite de pruebas de Front-End finalizada.")
 
 
 if __name__ == "__main__":
