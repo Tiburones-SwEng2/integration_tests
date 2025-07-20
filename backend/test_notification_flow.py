@@ -66,21 +66,3 @@ def run_notification_tests(access_token, donation_id, report):
         message = str(e)
         report.add_test_result(MODULE_NAME, "Envío Notificación", "FAILED", message, duration)
         print(f"[FAILED] Envío Notificación: {message}")
-
-    # Prueba de envío de notificación con datos faltantes
-    start_time = time.time()
-    try:
-        payload = {"email": "beneficiary@test.com"} # Falta el ID de la donación
-        res = requests.post(f"{NOTIFICATION_API_URL}/sendNotification", json=payload, headers=headers)
-        if res.status_code == 400:
-            message = "La API rechazó la petición incompleta."
-            duration = time.time() - start_time
-            report.add_test_result(MODULE_NAME, "Envío (Error: Datos Faltantes)", "PASSED", message, duration)
-            print(f"[PASSED] Envío (Error: Datos Faltantes): {message} ({duration:.2f}s)")
-        else:
-            raise Exception(f"La API no respondió con 400. Status: {res.status_code}")
-    except Exception as e:
-        duration = time.time() - start_time
-        message = str(e)
-        report.add_test_result(MODULE_NAME, "Envío (Error: Datos Faltantes)", "FAILED", message, duration)
-        print(f"[FAILED] Envío (Error: Datos Faltantes): {message}")

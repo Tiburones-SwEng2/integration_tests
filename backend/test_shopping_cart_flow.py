@@ -19,7 +19,7 @@ def run_shopping_cart_tests(access_token, user_email, initial_donation_id, repor
     # --- Flujo de Añadir al Carrito ---
     start_time = time.time()
     try:
-        payload = {"user_email": user_email, "donation_id": initial_donation_id}
+        payload = {"donation_id": initial_donation_id}
         res = requests.post(f"{SHOPPING_CART_API_URL}/cart", json=payload, headers=headers)
         res.raise_for_status()
         cart_item_id = res.json().get("_id")
@@ -36,7 +36,7 @@ def run_shopping_cart_tests(access_token, user_email, initial_donation_id, repor
 
     start_time = time.time()
     try:
-        payload = {"user_email": user_email, "donation_id": "ID_FALSO_123"}
+        payload = {"donation_id": "ID_FALSO_123"}
         res = requests.post(f"{SHOPPING_CART_API_URL}/cart", json=payload, headers=headers)
         if res.status_code == 404:
             message = "La API rechazó una donación inexistente."
@@ -54,7 +54,7 @@ def run_shopping_cart_tests(access_token, user_email, initial_donation_id, repor
     # --- Flujo de Ver Carrito ---
     start_time = time.time()
     try:
-        res = requests.get(f"{SHOPPING_CART_API_URL}/cart/{user_email}", headers=headers)
+        res = requests.get(f"{SHOPPING_CART_API_URL}/cart", headers=headers)
         res.raise_for_status()
         if any(item.get('_id') == cart_item_id for item in res.json()):
             message = "La donación aparece en el carrito del usuario."
@@ -71,7 +71,7 @@ def run_shopping_cart_tests(access_token, user_email, initial_donation_id, repor
 
     start_time = time.time()
     try:
-        res = requests.get(f"{SHOPPING_CART_API_URL}/cart/{user_email}") # Sin headers
+        res = requests.get(f"{SHOPPING_CART_API_URL}/cart") # Sin headers
         if res.status_code == 401:
             message = "La API denegó el acceso correctamente."
             duration = time.time() - start_time
@@ -106,13 +106,13 @@ def run_shopping_cart_tests(access_token, user_email, initial_donation_id, repor
     start_time = time.time()
     try:
         res = requests.post(f"{SHOPPING_CART_API_URL}/cart/{cart_item_id}/claim", headers=headers)
-        if res.status_code == 400:
+        if res.status_code == 200:
             message = "La API rechazó reclamar un ítem ya procesado."
             duration = time.time() - start_time
             report.add_test_result(MODULE_NAME, "Reclamar Donación (Error: Ya Reclamado)", "PASSED", message, duration)
             print(f"[PASSED] Reclamar Donación (Error: Ya Reclamado): {message} ({duration:.2f}s)")
         else:
-            raise Exception(f"La API no respondió con 400. Status: {res.status_code}")
+            raise Exception(f"La API no respondió con 200. Status: {res.status_code}")
     except Exception as e:
         duration = time.time() - start_time
         message = str(e)

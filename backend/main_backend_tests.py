@@ -57,11 +57,9 @@ def main():
         donation_id_for_notification = create_new_donation(access_token, "Notificaciones", report)
         run_notification_tests(access_token, donation_id_for_notification, report)
 
-        # --- Flujo de Carrito de Compras (Temporalmente Deshabilitado) ---
-        cart_message = "Pruebas deshabilitadas por refactorización."
-        print(f"\n[SKIPPED] Flujo de Carrito de Compras: {cart_message}")
-        # donation_id_for_cart = create_new_donation(access_token, "Carrito", report)
-        # run_shopping_cart_tests(access_token, user_email, donation_id_for_cart, report)
+        # --- Flujo de Carrito de Compras ---
+        donation_id_for_cart = create_new_donation(access_token, "Carrito", report)
+        run_shopping_cart_tests(access_token, user_email, donation_id_for_cart, report)
 
     except Exception as e:
         error_message = f"Error no controlado detuvo la suite: {e}"
