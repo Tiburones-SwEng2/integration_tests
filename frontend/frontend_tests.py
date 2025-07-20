@@ -279,10 +279,9 @@ def run_tests():
         driver.execute_script("arguments[0].scrollIntoView(true);", publicar_btn)
         time.sleep(0.5)
         publicar_btn.click()
-        time.sleep(3)
+        time.sleep(2)
 
         page_source = driver.page_source
-        time.sleep(3)
         assert "¡Donación publicada exitosamente!" in page_source
 
         duration = time.time() - start_time
@@ -323,10 +322,9 @@ def run_tests():
         driver.execute_script("arguments[0].scrollIntoView(true);", eliminar_btn)
         time.sleep(0.5)
         eliminar_btn.click()
-        time.sleep(3)
+        time.sleep(2)
 
         page_source = driver.page_source
-        time.sleep(3)
         assert "Éxito" in page_source
 
         duration = time.time() - start_time
